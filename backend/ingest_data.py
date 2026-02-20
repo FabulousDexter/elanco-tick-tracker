@@ -28,7 +28,7 @@ def ingest_excel_file(file_path):
 
     with Session(engine) as session:
         # Check if data already exists to avoid duplicates
-        existing = session.exec(select(TickData)).all()
+        existing = session.exec(select(TickData), limit=1).first()
         if existing:
             print("Data already exists in the database. Skipping ingestion.")
             return
@@ -56,7 +56,7 @@ def ingest_excel_file(file_path):
                     timestamp=timestamp,
                     location=str(row.get("location")),
                     species=str(row.get("species")),
-                    latin_name=str(row.get("latin_name")),
+                    latin_name=str(row.get("latinName")),
                 )
                 session.add(tick_entry)
             except Exception as e:
