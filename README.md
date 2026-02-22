@@ -1,23 +1,33 @@
-# Tick Tracking Application (MVP)
+# Elanco Tick Tracking Application (MVP)
 
-This repository contains the MVP implementation of the backend for the Tick Tracking Application API. It processes tick sighting data from an Excel file and exposes it via a RESTful API.
+Welcome to the backend service for the Elanco Tick Tracking Application. This system is designed to ingest, store, and analyze tick sighting data.
+
+This project implements a RESTful API that allows users to search for sightings and view aggregated reports on regional activity and trends over time.
 
 ## Project Structure
 
 ```
 backend/
-├── main.py              # Application entry point
-├── ingest_data.py       # Script to load Excel data into SQLite
+├── main.py              # Application entry point & Global Error Handling
+├── ingest_data.py       # Data Pipeline (Cleaning, Validation, Ingestion)
 ├── core/
 │   └── database.py      # Database connection & configuration
 ├── models/
-│   └── tick_data.py     # SQLModel data definition
+│   └── tick_data.py     # SQLModel schema definition
 ├── routers/
-│   └── sightings.py     # API endpoints for retrieving data
-└── ticks.db             # SQLite database (generated)
+│   └── sightings.py     # API controllers for Sightings and Reports
+└── ticks.db             # SQLite database (auto-generated)
 data/
 └── Tick Sightings.xlsx  # Raw data source
 ```
+
+## Key Features
+
+- **Data Ingestion**: Processes Excel datasets with duplicate checks and validation for missing data.
+- **Search & Filtering**: Case-insensitive filtering for location and species.
+- **Date Filtering**: Supports filtering sightings by specific date ranges.
+- **Data Reporting**: Endpoints for regional sighting counts and monthly trends.
+- **Error Handling**: Implements global exception handling.
 
 ## Prerequisites
 

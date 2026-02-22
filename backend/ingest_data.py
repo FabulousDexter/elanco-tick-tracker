@@ -27,17 +27,26 @@ def ingest_excel_file(file_path):
     )
 
     with Session(engine) as session:
-        # Check if data already exists to avoid duplicates
-        existing = session.exec(select(TickData), limit=1).first()
-        if existing:
-            print("Data already exists in the database. Skipping ingestion.")
-            return
-
         for index, row in df.iterrows():
             try:
+                tick_id = str(row.get("id"))
+
+                # Check for existing record to handle duplicates
+                existing_tick = session.exec(
+                    select(TickData).where(TickData.id == tick_id)
+                ).first()
+                if existing_tick:
+                    # Logic to skip or update. Skipping for now as per requirement to handle duplicates.
+                    continue
+
                 # Handling data parsing
                 date_val = row.get("date")
                 timestamp = None
+
+                # explicit checks for required fields
+                if pd.isna(date_val) or pd.isna(row.get("location")):
+                    print(f"Skipping row {index} due to missing date or location.")
+                    continue
 
                 # If date is string, parse it. If datetime object, use it directly.
                 if isinstance(date_val, str):
@@ -52,7 +61,7 @@ def ingest_excel_file(file_path):
 
                 # Create TickData object matching our model
                 tick_entry = TickData(
-                    id=str(row.get("id")),
+                    id=tick_id,
                     timestamp=timestamp,
                     location=str(row.get("location")),
                     species=str(row.get("species")),
