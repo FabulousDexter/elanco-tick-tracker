@@ -1,0 +1,20 @@
+# Python-specific ignore
+__pycache__/
+*.py[cod]
+*$py.class
+**/__pycache__/
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Databases
+*.db
+backend/ticks.db
+
+# IDE settings
+.vscode/
+
+# Other
+Submission_Video.mp4
